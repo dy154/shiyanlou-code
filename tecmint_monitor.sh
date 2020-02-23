@@ -113,5 +113,32 @@ nameservers=$(cat /etc/resolv.conf | sed '1 d' | awk '{print $2}')
 echo -e '\E[32m'"Name Servers :" $tecreset $nameservers
 
 who>/tmp/who
-echo -e '\E[32m'"Loged In users :" $tecreset 
+echo -e '\E[32m'"Loged In users :" $tecreset && cat /tmp/who
 
+
+free -h | grep -v + > /tmp/ramcahe
+echo -e '\E[32m'"Ram Usages :" $tecreset
+cat /tmp/ramcache | grep -v "Swap"
+echo -e '\E[32m'"Swap Usage :" $tecreset
+cat /tmp/ramcache | grep -v "Mem"
+
+
+df -h| gep 'Filesystem\|/dev/sda*' > /tmp/diskusage
+echo -e '\E[32m'"Disk Usages :" $teceset
+cat /tmp/diskusage
+
+
+loadaverage=$(top -n 1 -b | grep "load average:" | awk '{print $10 $11 $12}')
+echo -e '\E[32m'"Load Averag :" $tecreset $loadaverage
+
+
+tecuptime=$(uptime | awk '{print $,$4}' | cut -f1 -d,)
+echo -e '\E[32m'"System Uptime Days/(HH:MM) :" $tecreset $tecuptime
+
+
+unset tecreset os architecture kernelrelease internalip externalip nameserver loadaverage
+
+rm /tmp/who /tmp/ramcache /tmp/diskusage
+}
+fi
+shift $(($OPTIND -1))
